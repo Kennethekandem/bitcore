@@ -1,6 +1,8 @@
-// const bitcore = require('bitcore-lib')
-const CoinKey = require('coinkey')
-const ci = require('coininfo')
+const bitcore = require('bitcore-lib');
+const CoinKey = require('coinkey');
+const ci = require('coininfo');
+
+const insight = require('./insight')
 
 class Blockchain {
 
@@ -33,8 +35,27 @@ class Blockchain {
 
     }
 
-    static createTransaction = async () => {
+    static createTransaction = async (req, res) => {
+        const { address } = req.body;
 
+        try {
+
+            let utxo = await insight.getInsight(address)
+            res.json(utxo);
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        /*let insight = new Insight('testnet');
+        insight.getUnspentUtxos(address, (err, utxos) => {
+
+            if(err) {
+                res.json(err);
+            } else {
+                console.log(utxos);
+            }
+        })*/
     }
 }
 
