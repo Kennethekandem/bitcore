@@ -41,21 +41,17 @@ class Blockchain {
         try {
 
             let utxo = await insight.getInsight(address)
-            res.json(utxo);
+
+            let tx = await bitcore.Transaction();
+            tx.from(utxo);
+            tx.to(10000);
+
+            tx.serialize();
+
         }
         catch (e) {
             console.log(e);
         }
-
-        /*let insight = new Insight('testnet');
-        insight.getUnspentUtxos(address, (err, utxos) => {
-
-            if(err) {
-                res.json(err);
-            } else {
-                console.log(utxos);
-            }
-        })*/
     }
 }
 
