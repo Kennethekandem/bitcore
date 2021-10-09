@@ -8,7 +8,7 @@ class InsightController {
 
         await axios.get(`https://sochain.com/api/v2/get_tx_unspent/BTCTEST/${address}`)
             .then((response) => {
-                utxo = response.data
+                utxo = response.data.data.txs;
             })
             .catch((error) => {
                 console.log(error);

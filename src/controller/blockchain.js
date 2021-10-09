@@ -36,17 +36,30 @@ class Blockchain {
     }
 
     static createTransaction = async (req, res) => {
-        const { address } = req.body;
+        const { address, to_address } = req.body;
 
         try {
 
-            let utxo = await insight.getInsight(address)
+            let get_utxo = await insight.getInsight(address)
 
-            let tx = await bitcore.Transaction();
-            tx.from(utxo);
-            tx.to(10000);
+            let get_latest = get_utxo[get_utxo.length -1];
 
-            tx.serialize();
+            var utxo = {
+                "txId": get_latest.txid,
+                "outputIndex": get_latest.output_no,
+                "address": address,
+                "script": get_latest.script_hex,
+                "satoshis": parseInt(get_latest.value)
+            }
+
+            var tx = new bitcore.Transaction()
+                .from(utxo)
+                .to(to_address, 10000)
+                .change(address)
+                .sign('e204192bcb601d79e19656ccab434e636cf8b297f995f839518a73e7253f59a2')
+
+            console.log(tx.toObject());
+            res.json(tx)
 
         }
         catch (e) {
