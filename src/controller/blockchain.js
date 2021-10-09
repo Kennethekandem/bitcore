@@ -56,6 +56,7 @@ class Blockchain {
                 .from(utxo)
                 .to(to_address, 10000)
                 .change(address)
+                .fee(5000)
                 .sign('e204192bcb601d79e19656ccab434e636cf8b297f995f839518a73e7253f59a2')
 
             console.log(tx.toObject());
